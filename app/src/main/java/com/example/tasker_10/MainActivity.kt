@@ -1,14 +1,16 @@
 package com.example.tasker_10
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var sharedpreference: SharedPreferences
     lateinit var sharedPrefereceEditor: SharedPreferences.Editor
+    val REQUEST_RESULT = "REQUEST_RESULT"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,13 +23,25 @@ class MainActivity : AppCompatActivity() {
         var isLoggedIn = sharedpreference.getBoolean("islogged", false)
 
         if(isLoggedIn){
-            intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivityForResult(intent, 42)
+
         }else{
             intent = Intent(this, MainPage::class.java)
             startActivity(intent)
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val isLoginSuccess = data?.getBooleanExtra("isreturned", false)
+            if (isLoginSuccess == true) {
+                val intent = Intent(this, MainPage::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
 }
