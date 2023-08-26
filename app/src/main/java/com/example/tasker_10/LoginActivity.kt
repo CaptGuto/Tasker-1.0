@@ -33,8 +33,7 @@ class LoginActivity : AppCompatActivity() {
             intent.putExtra("isreturned", true)
             setResult(Activity.RESULT_OK, intent)
             finish()
-        }
-    }
+        }    }
 
     fun sendSharedPreference(){
         var username = UserNameET.text.toString()

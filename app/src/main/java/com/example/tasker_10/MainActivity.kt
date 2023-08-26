@@ -17,8 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sharedpreference = getSharedPreferences("LogInfo", MODE_PRIVATE)
-        sharedPrefereceEditor = sharedpreference.edit()
+
 
         var isLoggedIn = sharedpreference.getBoolean("islogged", false)
 
