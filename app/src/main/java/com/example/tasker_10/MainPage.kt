@@ -4,14 +4,19 @@ import android.annotation.SuppressLint
 import android.health.connect.datatypes.units.Length
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RestrictTo
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tasker_10.db.Task
 import com.example.tasker_10.db.TaskDatabase
+import com.example.tasker_10.db.taskDao
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainPage : AppCompatActivity() {
     lateinit var taskEditText: EditText
@@ -21,7 +26,8 @@ class MainPage : AppCompatActivity() {
     lateinit var mainRecyclerView: RecyclerView
     lateinit var mainRecyclerViewAdapter: TaskRecyclerViewAdapter
 
-    @SuppressLint("MissingInflatedId")
+
+            @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
@@ -33,9 +39,12 @@ class MainPage : AppCompatActivity() {
 
         val dao = TaskDatabase.getInstance(application).TaskDao()
         val factory = TaskViewModelFactory(dao)
-        taskViewModel = ViewModelProvider(this, factory).get(TaskViewModel::class.java)
+
+        taskViewModel = ViewModelProvider(this, factory)[TaskViewModel::class.java]
 
         initiateRecyclerView()
+
+        //The onClick listener for the add btn
         addTaskBtn.setOnClickListener{
             SaveTask()
         }
@@ -47,6 +56,7 @@ class MainPage : AppCompatActivity() {
     }
 
     fun SaveTask(){
+        Log.i("test101","this is working")
         val task =
             Task(0,
                 taskEditText.text.toString(),
@@ -54,7 +64,11 @@ class MainPage : AppCompatActivity() {
                 false)
 
         taskViewModel.addTask(task)
-        Toast.makeText(this,"Task Saved Success",Toast.LENGTH_SHORT)
+
+        // TODO: The Toast is not working  
+        Toast.makeText(applicationContext,"Task Saved Success",Toast.LENGTH_SHORT)
+        taskEditText.text.clear()
+        descriptionEditText.text.clear()
     }
 
     fun UpdateTask(task: Task){

@@ -17,9 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
-        var isLoggedIn = sharedpreference.getBoolean("islogged", false)
+        var isLoggedIn = false //sharedpreference.getBoolean("islogged", false)
 
         if(isLoggedIn){
             val intent = Intent(this, LoginActivity::class.java)

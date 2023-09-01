@@ -10,7 +10,7 @@ class TaskViewModel(private var dao: taskDao):ViewModel() {
     var allTasks = dao.getAllTask()
 
     fun addTask(task : Task) = viewModelScope.launch{
-            dao.insert(task)
+        dao.insert(task)
     }
 
     fun deleteTask(task: Task) = viewModelScope.launch{
