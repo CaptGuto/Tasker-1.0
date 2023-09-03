@@ -27,7 +27,7 @@ class MainPage : AppCompatActivity() {
     lateinit var mainRecyclerViewAdapter: TaskRecyclerViewAdapter
 
 
-            @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_page)
@@ -50,12 +50,23 @@ class MainPage : AppCompatActivity() {
         }
 
     }
+    
+    fun initiateRecyclerView(){
+        mainRecyclerView.layoutManager = LinearLayoutManager(this)
+        mainRecyclerViewAdapter = TaskRecyclerViewAdapter{
+                selectedItem: Task -> DeleteTask(selectedItem)
+        }
+        mainRecyclerView.adapter = mainRecyclerViewAdapter
+
+        getAllDataToRecyclerView()
+    }
 
     fun getAllTasks(){
         var allTask = taskViewModel.allTasks
     }
 
     fun SaveTask(){
+        // TODO: here the data will be retrived from the database using the viewModel and will be displayed on the respective widgets  
         Log.i("test101","this is working")
         val task =
             Task(0,
@@ -71,23 +82,11 @@ class MainPage : AppCompatActivity() {
         descriptionEditText.text.clear()
     }
 
-    fun UpdateTask(task: Task){
-        TODO("The update will be implemented differently")
-        Toast.makeText(this, "Task Updated", Toast.LENGTH_SHORT)
-    }
-
     fun DeleteTask(task: Task){
+        Toast.makeText(this,"task ${task.taskName} has been deleted", Toast.LENGTH_SHORT)
         taskViewModel.deleteTask(task)
-        Toast.makeText(this, "Task Deleted",Toast.LENGTH_SHORT)
     }
 
-    fun initiateRecyclerView(){
-        mainRecyclerView.layoutManager = LinearLayoutManager(this)
-        mainRecyclerViewAdapter = TaskRecyclerViewAdapter()
-        mainRecyclerView.adapter = mainRecyclerViewAdapter
-
-        getAllDataToRecyclerView()
-    }
 
     fun getAllDataToRecyclerView(){
         taskViewModel.allTasks.observe(this) {
